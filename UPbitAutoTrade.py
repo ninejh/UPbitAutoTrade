@@ -33,7 +33,7 @@ def autotrade(access_key, secret_key):
     auto_coin=input("자동매매를 시작할 코인의 티커(ticker)를 입력하시오: ")
     coin_service = "KRW-"+auto_coin 
     target_price = get_target_price(coin_service, 0.5)
-    print("타겟값: ",target_price)
+    print("타겟값: ",target_price,"원")
     print(auto_coin,"에 대한 자동매매를 시작합니다.(아무 키나 입력 시 종료합니다)") 
     while True:
         

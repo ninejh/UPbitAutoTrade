@@ -220,6 +220,7 @@ while(1):
         clean()
 
     if(value=='8'):
+        print("프로그램을 종료하겠습니다.")
         break
 
 

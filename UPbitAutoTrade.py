@@ -33,7 +33,10 @@ def autotrade(access_key, secret_key):
     auto_coin=input("자동매매를 시작할 코인의 티커(ticker)를 입력하시오: ")
     coin_service = "KRW-"+auto_coin 
     target_price = get_target_price(coin_service, 0.5)
-    print("타겟값: ",target_price,"원")
+    ma15 = get_ma15(coin_service)
+    print(f"타겟값: {target_price}원")
+    print("이동평균선값(15일): {0:.6}원".format(ma15))
+    
     print(auto_coin,"에 대한 자동매매를 시작합니다.(아무 키나 입력 시 종료합니다)") 
     while True:
         
@@ -49,17 +52,20 @@ def autotrade(access_key, secret_key):
                 if target_price < current_price and ma15 < current_price:
                     krw = get_balance(access_key,secret_key,"KRW")
                     if krw > 5000:
-                        auto_buy(access_key, secret_key, coin_service, krw)
+                        auto_buy(access_key, secret_key, coin_service, krw, ma15)
             else:
                 coin = get_balance(access_key,secret_key,auto_coin)
                 if coin > 0.00008:
                     auto_sell(access_key,secret_key,coin_service,coin)
+                    time.sleep(10)
             time.sleep(1)
         except Exception as e:
             print(e)
             time.sleep(1)
         if msvcrt.kbhit():
             break
+    
+            
         
 
 def get_ma15(ticker):
@@ -93,7 +99,7 @@ def buy(access_key,secret_key):
     else:
         print("잘못입력하였습니다.")
 
-def auto_buy(access_key,secret_key,coin_service,krw):
+def auto_buy(access_key,secret_key,coin_service,krw,ma15):
         upbit = pyupbit.Upbit(access_key,secret_key)
         upbit.buy_market_order(coin_service, krw*0.9995)
         print("매수하였습니다.") 
